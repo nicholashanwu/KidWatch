@@ -39,7 +39,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 
 		@Override
 		public void onClick(View v) {
-			listener.onClick(childList.get(getAdapterPosition()).getId());
+			listener.onClick(childList.get(getAdapterPosition()).getChildId());
 		}
 	}
 
@@ -53,7 +53,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 	@Override
 	public void onBindViewHolder(@NonNull ChildAdapter.ChildViewHolder holder, int position) {
 		Child mChild = childList.get(position);
-		holder.name.setText(mChild.getName());
+		holder.name.setText(mChild.getChildName());
 	}
 
 	@Override

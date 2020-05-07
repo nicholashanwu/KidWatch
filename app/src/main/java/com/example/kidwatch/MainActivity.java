@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 		RecyclerView mRecyclerView = findViewById(R.id.rv_list);
 
 		mDb = Room.databaseBuilder(this, ChildDatabase.class, "children.db").build();
-		mDb.childDao().getChildren().add(new Child("nick", new ArrayList<Currency>()));
+		mDb.childDao().getChildren().add(new Child("nick"));
 
 
 		//LayoutManager mLayoutManager = new LinearLayoutManager();

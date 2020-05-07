@@ -2,6 +2,7 @@ package com.example.kidwatch;
 
 import androidx.room.Dao;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import java.util.List;
 
@@ -11,15 +12,13 @@ public interface ChildDao {
     List<Child> getChildren();
     //query used to return a list of all courses from the course table
 
-    @Query("SELECT * FROM child WHERE id == :childId")
+    @Query("SELECT * FROM child WHERE childId == :childId")
     Child getChildren(int childId);
     //query used to return a single course that matches the id specified, used for the detail activity
 
+    @Transaction
+    @Query("SELECT * FROM child")
+    public List<ChildWithCurrencies> getChildrenWithCurrencies();
 
-
-
-    //TODO Implement a Room query that return a course with a specified id
-
-    //TODO Implement a Room query that returns all courses from a specified school
 
 }

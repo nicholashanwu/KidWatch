@@ -11,37 +11,30 @@ import java.util.List;
 @Entity
 public class Child {
 
-	public Child (String name, ArrayList<Currency> currencyList) {
-		this.name = name;
-		this.currencyList = currencyList;
-	}
-
 	@PrimaryKey
-	private int id;
-	private String name;
-	private ArrayList<Currency> currencyList;
+	private int childId;
 
-	public int getId() {
-		return id;
+	private String childName;
+
+	public Child (String childName) {
+		this.childName = childName;
+
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public int getChildId() {
+		return childId;
 	}
 
-	public String getName() {
-		return name;
+	public void setChildId(int childId) {
+		this.childId = childId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getChildName() {
+		return childName;
 	}
 
-	public List<Currency> getCurrencyList() {
-		return currencyList;
+	public void setChildName(String childName) {
+		this.childName = childName;
 	}
 
-	public void setCurrencyList(ArrayList<Currency> currencyList) {
-		this.currencyList = currencyList;
-	}
 }
