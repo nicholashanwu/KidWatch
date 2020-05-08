@@ -9,11 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHolder> {
 
-	ArrayList<Child> childList;
-	ChildClickListener listener;
+	private List<ChildWithCurrencies> childList = new ArrayList<>();
+	private ChildClickListener listener;
 
 
 	public ChildAdapter (ArrayList<Child> childlist, ChildClickListener listener){
@@ -39,7 +40,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 
 		@Override
 		public void onClick(View v) {
-			listener.onClick(childList.get(getAdapterPosition()).getChildId());
+			listener.onClick(childList.get(getAdapterPosition()).child.getChildId());
 		}
 	}
 
@@ -52,13 +53,18 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 
 	@Override
 	public void onBindViewHolder(@NonNull ChildAdapter.ChildViewHolder holder, int position) {
-		Child mChild = childList.get(position);
+		Child mChild = childList.get(position).child;
 		holder.name.setText(mChild.getChildName());
 	}
 
 	@Override
 	public int getItemCount() {
 		return childList.size();
+	}
+
+	public void setChildren(List<ChildWithCurrencies> childWithCurrenciesList) {
+		this.childList = childWithCurrenciesList;
+		notifyDataSetChanged();
 	}
 
 

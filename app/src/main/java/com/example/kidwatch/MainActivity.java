@@ -1,28 +1,18 @@
 package com.example.kidwatch;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
-
-	ChildAdapter mAdapter;
-	ChildDatabase mDb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,24 +27,13 @@ public class MainActivity extends AppCompatActivity {
 			public void onClick(View view) {
 				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 						.setAction("Action", null).show();
+
+				FragmentTransaction ftr = getSupportFragmentManager().beginTransaction();
+				ftr.replace(R.id.nav_host_fragment, new HomeFragment());
+				ftr.commit();
+
 			}
 		});
-
-		RecyclerView mRecyclerView = findViewById(R.id.rv_list);
-
-		mDb = Room.databaseBuilder(this, ChildDatabase.class, "children.db").build();
-		mDb.childDao().getChildren().add(new Child("nick"));
-
-
-		//LayoutManager mLayoutManager = new LinearLayoutManager();
-		mAdapter = new ChildAdapter(new ArrayList<Child>(), new ChildAdapter.ChildClickListener() {
-			@Override
-			public void onClick(int id) {
-				//start detail activity with position
-			}
-		});
-
-
 
 	}
 

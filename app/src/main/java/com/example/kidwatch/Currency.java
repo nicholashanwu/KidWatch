@@ -4,15 +4,19 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public abstract class Currency {
+public class Currency {
 
-	@PrimaryKey
+	@PrimaryKey(autoGenerate = true)
 	private int currencyId;
 
 	private String currencyName;
 
 	private int amount;
 
+	/*@ForeignKey(entity = Child.class,
+	parentColumns = "currencyId",
+	childColumns = "childOwnerId",
+	onDelete = CASCADE)*/
 	private int childOwnerId;
 
 	public Currency(String currencyName, int amount, int childOwnerId) {
@@ -20,6 +24,9 @@ public abstract class Currency {
 		this.amount = amount;
 		this.childOwnerId = childOwnerId;
 	}
+
+
+
 
 	public int getCurrencyId() {
 		return currencyId;
@@ -49,7 +56,7 @@ public abstract class Currency {
 		return childOwnerId;
 	}
 
-	public void setChildId(int childOwnerId) {
+	public void setChildOwnerId(int childOwnerId) {
 		this.childOwnerId = childOwnerId;
 	}
 }

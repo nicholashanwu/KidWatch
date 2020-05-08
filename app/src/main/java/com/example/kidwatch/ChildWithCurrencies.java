@@ -6,7 +6,8 @@ import androidx.room.Relation;
 import java.util.List;
 
 public class ChildWithCurrencies {
-	@Embedded public Child child;
+	@Embedded
+	public Child child;
 	@Relation(
 			parentColumn = "childId",
 			entityColumn = "childOwnerId"

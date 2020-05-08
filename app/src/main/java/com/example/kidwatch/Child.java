@@ -3,22 +3,19 @@ package com.example.kidwatch;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 
 @Entity
 public class Child {
 
-	@PrimaryKey
+	@PrimaryKey(autoGenerate = true)
 	private int childId;
 
 	private String childName;
 
-	public Child (String childName) {
-		this.childName = childName;
 
+	public Child(String childName) {
+		this.childName = childName;
 	}
 
 	public int getChildId() {

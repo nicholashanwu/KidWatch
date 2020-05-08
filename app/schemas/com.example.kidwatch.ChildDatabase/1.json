@@ -1,0 +1,78 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "eb6bcb4bfd16c0461d8c60b01c4c7477",
+    "entities": [
+      {
+        "tableName": "Child",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`childId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `childName` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "childId",
+            "columnName": "childId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "childName",
+            "columnName": "childName",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "childId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Currency",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`currencyId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `currencyName` TEXT, `amount` INTEGER NOT NULL, `childOwnerId` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "currencyId",
+            "columnName": "currencyId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currencyName",
+            "columnName": "currencyName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "childOwnerId",
+            "columnName": "childOwnerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "currencyId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eb6bcb4bfd16c0461d8c60b01c4c7477')"
+    ]
+  }
+}
