@@ -6,11 +6,13 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ChildRepository {
 
 	private ChildDao childDao;
 	private LiveData<List<ChildWithCurrencies>> allChildren;
+	private static Child currentChild;
 
 	public ChildRepository(Application application) {
 		ChildDatabase database = ChildDatabase.getInstance(application);
@@ -20,6 +22,27 @@ public class ChildRepository {
 
 	public void insert(Child child) {
 		new InsertChildTask(childDao).execute(child);
+	}
+
+	public void insert(Currency currency) {
+		new InsertCurrencyTask(childDao).execute(currency);
+	}
+
+	public Child getChild(Child child) {
+		new GetChildTask(childDao).execute(child);
+		return currentChild;
+	}
+
+	public Child getChildByName(String childName) {
+		try {
+			return new GetChildByNameTask(childDao).execute(childName).get();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		return currentChild;
 	}
 
 	public void update(Child child) {
@@ -48,6 +71,20 @@ public class ChildRepository {
 		@Override
 		protected Void doInBackground(Child... children) {
 			childDao.insert(children[0]);
+			return null;
+		}
+	}
+
+	private static class InsertCurrencyTask extends AsyncTask<Currency, Void, Void> {
+		private ChildDao childDao;
+
+		private InsertCurrencyTask(ChildDao childDao){
+			this.childDao = childDao;
+		}
+
+		@Override
+		protected Void doInBackground(Currency... currencies) {
+			childDao.insert(currencies[0]);
 			return null;
 		}
 	}
@@ -91,6 +128,46 @@ public class ChildRepository {
 		protected Void doInBackground(Void... voids) {
 			childDao.deleteAllChildren();
 			return null;
+		}
+	}
+
+	private static class GetChildTask extends AsyncTask<Child, Void, Child> {
+		private ChildDao childDao;
+
+		private GetChildTask(ChildDao childDao) {
+			this.childDao = childDao;
+		}
+
+		@Override
+		protected Child doInBackground(Child... children) {
+			return childDao.getChild(children[0].getChildId());
+		}
+
+		@Override
+		protected void onPostExecute(Child child) {
+			super.onPostExecute(child);
+			currentChild = child;
+
+
+		}
+	}
+
+	private static class GetChildByNameTask extends AsyncTask<String, Void, Child> {
+		private ChildDao childDao;
+
+		private GetChildByNameTask(ChildDao childDao) {
+			this.childDao = childDao;
+		}
+
+		@Override
+		protected Child doInBackground(String... children) {
+			return childDao.getChild(children[0]);
+		}
+
+		@Override
+		protected void onPostExecute(Child child) {
+			super.onPostExecute(child);
+			currentChild = child;
 		}
 	}
 

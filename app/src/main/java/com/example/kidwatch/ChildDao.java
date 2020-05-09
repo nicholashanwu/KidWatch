@@ -24,6 +24,8 @@ public interface ChildDao {
     @Query("SELECT * FROM child")
     LiveData<List<ChildWithCurrencies>> getChildrenWithCurrencies();
 
+
+
     @Query("DELETE FROM child")
     void deleteAllChildren();
 

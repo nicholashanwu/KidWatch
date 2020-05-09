@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_name"
         android:layout_alignParentStart="true"
-        android:hint="currency"
-        android:inputType="textPassword" />
+        android:hint="currency" />
 
 </RelativeLayout>

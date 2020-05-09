@@ -59,4 +59,9 @@ public class Currency {
 	public void setChildOwnerId(int childOwnerId) {
 		this.childOwnerId = childOwnerId;
 	}
+
+	@Override
+	public String toString(){
+		return getCurrencyName();
+	}
 }

@@ -1,9 +1,12 @@
 package com.example.kidwatch.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,7 +19,9 @@ import com.example.kidwatch.Child;
 import com.example.kidwatch.ChildDatabase;
 import com.example.kidwatch.ChildViewModel;
 import com.example.kidwatch.ChildWithCurrencies;
+import com.example.kidwatch.Currency;
 import com.example.kidwatch.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +29,6 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
 	private ChildViewModel childViewModel;
-
 
 	ChildAdapter mAdapter;
 	ChildDatabase mDb;
@@ -38,6 +42,50 @@ public class HomeFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		//mDb = Room.databaseBuilder(getActivity(), ChildDatabase.class, "children.db").build();
+		FloatingActionButton fab = view.findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+				View newView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null);
+
+				final EditText childName = newView.findViewById(R.id.edit_name);
+				final EditText currencyName = newView.findViewById(R.id.edit_currency);
+
+
+
+
+				builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//add to database
+
+						Child child = new Child(childName.getText().toString());
+						childViewModel.insert(child);
+
+
+						//System.out.println("hi" + childViewModel.getChildByName("john"));
+						Currency currency = new Currency(currencyName.getText().toString(), 10,
+								childViewModel.getChildByName(childName.getText().toString()).getChildId());
+
+						childViewModel.insert(currency);
+					}
+				});
+
+				builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//do nothing
+					}
+				});
+
+				builder.setView(newView);
+				builder.show();
+
+			}
+		});
+
 
 		RecyclerView mRecyclerView = view.getRootView().findViewById(R.id.rv_list);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -62,6 +110,10 @@ public class HomeFragment extends Fragment {
 				});
 
 	}
+
+
+
+
 
 
 }

@@ -24,8 +24,20 @@ public class ChildViewModel extends AndroidViewModel {
 		repository.insert(child);
 	}
 
+	public void insert(Currency currency) {
+		repository.insert(currency);
+	}
+
 	public void update(Child child) {
 		repository.update(child);
+	}
+
+	public Child getChild(Child child) {
+		return repository.getChild(child);
+	}
+
+	public Child getChildByName(String childName) {
+		return repository.getChildByName(childName);
 	}
 
 	public void delete(Child child) {
