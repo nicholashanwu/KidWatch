@@ -14,7 +14,10 @@ import java.util.List;
 public interface ChildDao {
 
     @Query("SELECT * FROM child WHERE childId == :childId")
-    Child getChildren(int childId);
+    Child getChild(int childId);
+
+    @Query("SELECT * FROM child WHERE childName == :childName")
+    Child getChild(String childName);
 
 
     @Transaction
@@ -26,6 +29,9 @@ public interface ChildDao {
 
     @Insert
     void insert(Child child);
+
+    @Insert
+    void insert(Currency currency);
 
     @Delete
     void delete(Child child);

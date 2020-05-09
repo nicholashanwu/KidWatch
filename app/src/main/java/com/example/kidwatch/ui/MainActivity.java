@@ -1,4 +1,4 @@
-package com.example.kidwatch;
+package com.example.kidwatch.ui;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.kidwatch.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 

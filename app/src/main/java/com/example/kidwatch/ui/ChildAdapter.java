@@ -1,4 +1,4 @@
-package com.example.kidwatch;
+package com.example.kidwatch.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kidwatch.Child;
+import com.example.kidwatch.ChildWithCurrencies;
+import com.example.kidwatch.R;
 
 import java.util.ArrayList;
 import java.util.List;

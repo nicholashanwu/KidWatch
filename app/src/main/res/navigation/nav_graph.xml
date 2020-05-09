@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.kidwatch.HomeFragment"
+        android:name="com.example.kidwatch.ui.HomeFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_home">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.kidwatch.DetailFragment"
+        android:name="com.example.kidwatch.ui.DetailFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_detail">
 

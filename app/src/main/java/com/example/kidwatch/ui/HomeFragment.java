@@ -1,4 +1,4 @@
-package com.example.kidwatch;
+package com.example.kidwatch.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kidwatch.Child;
+import com.example.kidwatch.ChildDatabase;
+import com.example.kidwatch.ChildViewModel;
+import com.example.kidwatch.ChildWithCurrencies;
+import com.example.kidwatch.R;
 
 import java.util.ArrayList;
 import java.util.List;

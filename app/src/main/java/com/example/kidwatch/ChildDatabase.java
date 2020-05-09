@@ -47,6 +47,11 @@ public abstract class ChildDatabase extends RoomDatabase {
             childDao.insert(new Child("nick"));
             childDao.insert(new Child("ollie"));
             childDao.insert(new Child("marina"));
+            childDao.insert(new Currency("name", 10, childDao.getChild("nick").getChildId()));
+
+
+
+
             return null;
         }
     }
