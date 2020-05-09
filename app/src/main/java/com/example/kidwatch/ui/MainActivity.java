@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,7 +14,7 @@ import com.example.kidwatch.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NewChildDialog.ExampleDialogListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
 				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 						.setAction("Action", null).show();
 
-				FragmentTransaction ftr = getSupportFragmentManager().beginTransaction();
-				ftr.replace(R.id.nav_host_fragment, new HomeFragment());
-				ftr.commit();
+				openDialog();
+//				FragmentTransaction ftr = getSupportFragmentManager().beginTransaction();
+//				ftr.replace(R.id.nav_host_fragment, new HomeFragment());
+//				ftr.commit();
 
 			}
 		});
@@ -58,5 +60,21 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void openDialog() {
+		NewChildDialog dialog = new NewChildDialog();
+		dialog.show(getSupportFragmentManager(), "example dialog");
+	}
+
+
+	@Override
+	public void addChild(String childName, String currencyName) {
+		if(childName.trim().isEmpty() || currencyName.trim().isEmpty()) {
+			Toast.makeText(this, "Both fields are required", Toast.LENGTH_SHORT).show();
+			return;
+		} else {
+			ChildWithCurrencies childWithCurrencies = new ChildWithCurrencies();
+		}
 	}
 }
