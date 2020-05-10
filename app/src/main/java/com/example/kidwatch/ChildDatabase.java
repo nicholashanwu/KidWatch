@@ -45,8 +45,6 @@ public abstract class ChildDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
             childDao.insert(new Child("john"));
-            childDao.insert(new Currency("your mum", 10, childDao.getChild("john").getChildId()));
-            childDao.insert(new Currency("your dad", 10, childDao.getChild("john").getChildId()));
 
             return null;
         }

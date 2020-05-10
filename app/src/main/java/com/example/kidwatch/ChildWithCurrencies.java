@@ -10,7 +10,8 @@ public class ChildWithCurrencies {
 	public Child child;
 	@Relation(
 			parentColumn = "childId",
-			entityColumn = "childOwnerId"
+			entityColumn = "childOwnerId",
+			entity = Currency.class
 	)
 	public List<Currency> currencies;
 

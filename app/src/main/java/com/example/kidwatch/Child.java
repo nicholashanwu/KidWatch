@@ -1,28 +1,32 @@
 package com.example.kidwatch;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.List;
 
 
 @Entity
 public class Child {
 
 	@PrimaryKey(autoGenerate = true)
-	private int childId;
+	private long childId;
 
 	private String childName;
 
+	@Ignore
+	private List<Currency> childCurrencies = null;
 
 	public Child(String childName) {
 		this.childName = childName;
 	}
 
-	public int getChildId() {
+	public long getChildId() {
 		return childId;
 	}
 
-	public void setChildId(int childId) {
+	public void setChildId(long childId) {
 		this.childId = childId;
 	}
 
@@ -34,4 +38,8 @@ public class Child {
 		this.childName = childName;
 	}
 
+	@Override
+	public String toString() {
+		return childName;
+	}
 }

@@ -29,7 +29,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 	}
 
 	public interface ChildClickListener {
-		void onClick(int id);
+		void onClick(long id);
 	}
 
 	public class ChildViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -63,11 +63,6 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 		Child mChild = childList.get(position).child;
 
 		ArrayList<Currency> childCurrencies = new ArrayList<>();
-
-		for(int i = 0; i < childList.get(position).currencies.size(); i++) {
-			System.out.println(childList.get(position).currencies.get(i).getCurrencyName());
-		}
-
 
 		holder.name.setText(mChild.getChildName());
 		holder.currency.setText(Arrays.toString(childList.get(position).currencies.toArray()));

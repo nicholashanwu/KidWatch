@@ -61,15 +61,11 @@ public class HomeFragment extends Fragment {
 					public void onClick(DialogInterface dialog, int which) {
 						//add to database
 
-						Child child = new Child(childName.getText().toString());
-						childViewModel.insert(child);
+						childViewModel.insertChildWithCurrencies(
+								new Child(childName.getText().toString()),
+								(new Currency(currencyName.getText().toString(), 10)));
 
 
-						//System.out.println("hi" + childViewModel.getChildByName("john"));
-						Currency currency = new Currency(currencyName.getText().toString(), 10,
-								childViewModel.getChildByName(childName.getText().toString()).getChildId());
-
-						childViewModel.insert(currency);
 					}
 				});
 
@@ -93,7 +89,7 @@ public class HomeFragment extends Fragment {
 
 		mAdapter = new ChildAdapter(new ArrayList<Child>(), new ChildAdapter.ChildClickListener() {
 			@Override
-			public void onClick(int id) {
+			public void onClick(long id) {
 				//start detail activity with position
 			}
 		});

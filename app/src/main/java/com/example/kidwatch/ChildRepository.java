@@ -28,6 +28,10 @@ public class ChildRepository {
 		new InsertCurrencyTask(childDao).execute(currency);
 	}
 
+	public void insertChildWithCurrencies(Child child, Currency currency) {
+		new InsertChildWithCurrencyTask(childDao, child, currency).execute();
+	}
+
 	public Child getChild(Child child) {
 		new GetChildTask(childDao).execute(child);
 		return currentChild;
@@ -59,6 +63,24 @@ public class ChildRepository {
 
 	public LiveData<List<ChildWithCurrencies>> getAllChildren() {
 		return allChildren;
+	}
+
+	private static class InsertChildWithCurrencyTask extends AsyncTask<Void, Void, Void> {
+		private ChildDao childDao;
+		private Child child;
+		private Currency currency;
+
+		private InsertChildWithCurrencyTask(ChildDao childDao, Child child, Currency currency){
+			this.childDao = childDao;
+			this.child = child;
+			this.currency = currency;
+		}
+
+		@Override
+		protected Void doInBackground(Void... voids) {
+			childDao.insertChildWithCurrencies(child, currency);
+			return null;
+		}
 	}
 
 	private static class InsertChildTask extends AsyncTask<Child, Void, Void> {

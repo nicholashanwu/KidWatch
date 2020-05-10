@@ -1,7 +1,10 @@
 package com.example.kidwatch;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+
+import static androidx.room.ForeignKey.CASCADE;
 
 @Entity
 public class Currency {
@@ -13,19 +16,18 @@ public class Currency {
 
 	private int amount;
 
-	/*@ForeignKey(entity = Child.class,
-	parentColumns = "currencyId",
-	childColumns = "childOwnerId",
-	onDelete = CASCADE)*/
-	private int childOwnerId;
+	@ForeignKey
+			(
+					entity = Child.class,
+					parentColumns = "currencyId",
+					childColumns = "childOwnerId",
+					onDelete = CASCADE)
+	private long childOwnerId;
 
-	public Currency(String currencyName, int amount, int childOwnerId) {
+	public Currency(String currencyName, int amount) {
 		this.currencyName = currencyName;
 		this.amount = amount;
-		this.childOwnerId = childOwnerId;
 	}
-
-
 
 
 	public int getCurrencyId() {
@@ -52,16 +54,16 @@ public class Currency {
 		this.amount = amount;
 	}
 
-	public int getChildOwnerId() {
+	public long getChildOwnerId() {
 		return childOwnerId;
 	}
 
-	public void setChildOwnerId(int childOwnerId) {
+	public void setChildOwnerId(long childOwnerId) {
 		this.childOwnerId = childOwnerId;
 	}
 
 	@Override
-	public String toString(){
+	public String toString() {
 		return getCurrencyName();
 	}
 }
