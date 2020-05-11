@@ -42,6 +42,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 			this.listener = listener;
 			this.name = itemView.findViewById(R.id.tvName);
 			this.currency = itemView.findViewById(R.id.tvCurrency);
+			itemView.setOnClickListener(this);
 		}
 
 		@Override

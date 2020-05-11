@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kidwatch.Child;
-import com.example.kidwatch.ChildDatabase;
 import com.example.kidwatch.ChildViewModel;
 import com.example.kidwatch.ChildWithCurrencies;
 import com.example.kidwatch.Currency;
@@ -29,9 +29,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
 	private ChildViewModel childViewModel;
-
-	ChildAdapter mAdapter;
-	ChildDatabase mDb;
+	private ChildAdapter mAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,9 +51,6 @@ public class HomeFragment extends Fragment {
 				final EditText childName = newView.findViewById(R.id.edit_name);
 				final EditText currencyName = newView.findViewById(R.id.edit_currency);
 
-
-
-
 				builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -64,7 +59,6 @@ public class HomeFragment extends Fragment {
 						childViewModel.insertChildWithCurrencies(
 								new Child(childName.getText().toString()),
 								(new Currency(currencyName.getText().toString(), 10)));
-
 
 					}
 				});
@@ -90,6 +84,18 @@ public class HomeFragment extends Fragment {
 		mAdapter = new ChildAdapter(new ArrayList<Child>(), new ChildAdapter.ChildClickListener() {
 			@Override
 			public void onClick(long id) {
+
+				Bundle bundle = new Bundle();
+				bundle.putLong("id", id);
+
+				Fragment fragment = new DetailFragment();
+
+				fragment.setArguments(bundle);
+
+
+				NavHostFragment.findNavController(HomeFragment.this).
+						navigate(R.id.action_HomeFragment_to_DetailFragment, bundle);
+
 				//start detail activity with position
 			}
 		});
@@ -97,19 +103,17 @@ public class HomeFragment extends Fragment {
 		mRecyclerView.setAdapter(mAdapter);
 
 		childViewModel = new ViewModelProvider(this).get(ChildViewModel.class);
+
+
 		childViewModel.getAllChildren().observe(getViewLifecycleOwner(), new Observer<List<ChildWithCurrencies>>() {
-					@Override
-					public void onChanged(List<ChildWithCurrencies> childWithCurrencies) {
-						//update RecyclerView
-						mAdapter.setChildren(childWithCurrencies);
-					}
-				});
+			@Override
+			public void onChanged(List<ChildWithCurrencies> childWithCurrencies) {
+				//update RecyclerView
+				mAdapter.setChildren(childWithCurrencies);
+			}
+		});
 
 	}
-
-
-
-
 
 
 }

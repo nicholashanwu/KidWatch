@@ -36,12 +36,18 @@ public class ChildViewModel extends AndroidViewModel {
 		repository.update(child);
 	}
 
-	public Child getChild(Child child) {
-		return repository.getChild(child);
+	public Child getChildById(long id) {
+		System.out.println("hi");
+
+		return repository.getChildById(id);
 	}
 
 	public Child getChildByName(String childName) {
 		return repository.getChildByName(childName);
+	}
+
+	public List<Currency> getCurrency(long id) {
+		return repository.getCurrency(id);
 	}
 
 	public void delete(Child child) {

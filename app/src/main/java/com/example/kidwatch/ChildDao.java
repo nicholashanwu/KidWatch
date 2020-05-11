@@ -31,10 +31,12 @@ public abstract class ChildDao {
 		final long childId = insert(child);
 
 		currency.setChildOwnerId(childId);
-		System.out.println(currency.getChildOwnerId());
 		insert(currency);
 
 	}
+
+	@Query("SELECT * FROM currency WHERE childOwnerId == :childOwnerId")
+	public abstract List<Currency> getCurrency(long childOwnerId);
 
 
 	@Query("DELETE FROM child")
