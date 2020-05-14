@@ -21,7 +21,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 
 	private ChildClickListener listener;
 
-	public ChildAdapter (ArrayList<Child> childlist, ChildClickListener listener){
+	public ChildAdapter(ArrayList<Child> childlist, ChildClickListener listener) {
 		this.childList = childList;
 		this.listener = listener;
 	}
@@ -62,8 +62,11 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 		ArrayList<Currency> childCurrencies = new ArrayList<>();
 
 		holder.name.setText(mChild.getChildName());
-		holder.currency.setText(mChild.getCurrencyList().get(0).toString());
-
+		if (!mChild.getCurrencyList().isEmpty()) {
+			holder.currency.setText(mChild.getCurrencyList().get(0).toString());
+		} else {
+			holder.currency.setText("");
+		}
 	}
 
 	@Override

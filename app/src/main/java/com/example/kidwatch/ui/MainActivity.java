@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 			// create("storage.json", "{}");
 			//do the json parsing here and do the rest of functionality of app
 		} else {
-			boolean isFileCreated = create("storage.json", "{}");
+			boolean isFileCreated = create("storage.json", "[]");
 			if (isFileCreated) {
 				System.out.println("file created");
 				//proceed with storing the first todo  or show ui

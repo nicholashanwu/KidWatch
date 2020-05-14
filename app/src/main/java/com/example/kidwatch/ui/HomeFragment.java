@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kidwatch.Child;
 import com.example.kidwatch.Currency;
 import com.example.kidwatch.R;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,7 +30,7 @@ public class HomeFragment extends Fragment {
 
 	private ChildAdapter mAdapter;
 	private Gson gson;
-
+	private ExtendedFloatingActionButton mFabAddChild;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,16 +43,12 @@ public class HomeFragment extends Fragment {
 		gson = new Gson();
 		final Type childType = new TypeToken<ArrayList<Child>>(){}.getType();
 
-
-		FloatingActionButton fab = view.findViewById(R.id.fab);
-
+		mFabAddChild = view.findViewById(R.id.fabAddChild);
 
 		RecyclerView mRecyclerView = view.getRootView().findViewById(R.id.rv_list);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		mRecyclerView.setHasFixedSize(true);
 		ArrayList<Child> children = gson.fromJson(		((MainActivity)getActivity()).read("storage.json"), childType);
-
-
 
 		mAdapter = new ChildAdapter(new ArrayList<Child>(), new ChildAdapter.ChildClickListener() {
 			@Override
@@ -75,7 +72,7 @@ public class HomeFragment extends Fragment {
 		mAdapter.setChildren(children);
 
 
-		fab.setOnClickListener(new View.OnClickListener() {
+		mFabAddChild.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 
@@ -83,14 +80,12 @@ public class HomeFragment extends Fragment {
 				View newView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_layout, null);
 
 				final EditText childName = newView.findViewById(R.id.edit_name);
-				final EditText currencyName = newView.findViewById(R.id.edit_currency);
 
 				builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
 						List<Currency> currencyList = new ArrayList<>();
-						currencyList.add(new Currency(currencyName.getText().toString(), 10));
 
 						ArrayList<Child> children = gson.fromJson(		((MainActivity)getActivity()).read("storage.json"), childType);
 						Child child = new Child(childName.getText().toString(), currencyList);
