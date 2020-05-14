@@ -1,33 +1,20 @@
 package com.example.kidwatch;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-
-@Entity
 public class Child {
 
-	@PrimaryKey(autoGenerate = true)
-	private long childId;
-
+	@SerializedName("child_name")
 	private String childName;
+	@SerializedName("child_currencies")
+	private List<Currency> currencyList;
 
-	@Ignore
-	private List<Currency> childCurrencies = null;
 
-	public Child(String childName) {
+	public Child(String childName, List<Currency> currencyList) {
 		this.childName = childName;
-	}
-
-	public long getChildId() {
-		return childId;
-	}
-
-	public void setChildId(long childId) {
-		this.childId = childId;
+		this.currencyList = currencyList;
 	}
 
 	public String getChildName() {
@@ -38,8 +25,18 @@ public class Child {
 		this.childName = childName;
 	}
 
+	public List<Currency> getCurrencyList() {
+		return currencyList;
+	}
+
+	public void setCurrencyList(List<Currency> currencyList) {
+		this.currencyList = currencyList;
+	}
+
 	@Override
 	public String toString() {
 		return childName;
 	}
+
+
 }

@@ -10,26 +10,26 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kidwatch.Child;
-import com.example.kidwatch.ChildViewModel;
-import com.example.kidwatch.ChildWithCurrencies;
 import com.example.kidwatch.Currency;
 import com.example.kidwatch.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-	private ChildViewModel childViewModel;
 	private ChildAdapter mAdapter;
+	private Gson gson;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,8 +39,42 @@ public class HomeFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		//mDb = Room.databaseBuilder(getActivity(), ChildDatabase.class, "children.db").build();
+		gson = new Gson();
+		final Type childType = new TypeToken<ArrayList<Child>>(){}.getType();
+
+
 		FloatingActionButton fab = view.findViewById(R.id.fab);
+
+
+		RecyclerView mRecyclerView = view.getRootView().findViewById(R.id.rv_list);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		mRecyclerView.setHasFixedSize(true);
+		ArrayList<Child> children = gson.fromJson(		((MainActivity)getActivity()).read("storage.json"), childType);
+
+
+
+		mAdapter = new ChildAdapter(new ArrayList<Child>(), new ChildAdapter.ChildClickListener() {
+			@Override
+			public void onClick(int id) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("id", id);
+
+				Fragment fragment = new DetailFragment();
+
+				fragment.setArguments(bundle);
+
+				NavHostFragment.findNavController(HomeFragment.this).
+						navigate(R.id.action_HomeFragment_to_DetailFragment, bundle);
+
+				//start detail activity with position
+			}
+		});
+
+		mRecyclerView.setAdapter(mAdapter);
+		mAdapter.setChildren(children);
+
+
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -54,11 +88,21 @@ public class HomeFragment extends Fragment {
 				builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						//add to database
 
-						childViewModel.insertChildWithCurrencies(
-								new Child(childName.getText().toString()),
-								(new Currency(currencyName.getText().toString(), 10)));
+						List<Currency> currencyList = new ArrayList<>();
+						currencyList.add(new Currency(currencyName.getText().toString(), 10));
+
+						ArrayList<Child> children = gson.fromJson(		((MainActivity)getActivity()).read("storage.json"), childType);
+						Child child = new Child(childName.getText().toString(), currencyList);
+						children.add(child);
+
+						String json = gson.toJson(children);
+
+						((MainActivity)getActivity()).write("storage.json", json);
+
+
+						mAdapter.setChildren(children);
+						//add to database
 
 					}
 				});
@@ -77,41 +121,10 @@ public class HomeFragment extends Fragment {
 		});
 
 
-		RecyclerView mRecyclerView = view.getRootView().findViewById(R.id.rv_list);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		mRecyclerView.setHasFixedSize(true);
-
-		mAdapter = new ChildAdapter(new ArrayList<Child>(), new ChildAdapter.ChildClickListener() {
-			@Override
-			public void onClick(long id) {
-
-				Bundle bundle = new Bundle();
-				bundle.putLong("id", id);
-
-				Fragment fragment = new DetailFragment();
-
-				fragment.setArguments(bundle);
 
 
-				NavHostFragment.findNavController(HomeFragment.this).
-						navigate(R.id.action_HomeFragment_to_DetailFragment, bundle);
-
-				//start detail activity with position
-			}
-		});
-
-		mRecyclerView.setAdapter(mAdapter);
-
-		childViewModel = new ViewModelProvider(this).get(ChildViewModel.class);
 
 
-		childViewModel.getAllChildren().observe(getViewLifecycleOwner(), new Observer<List<ChildWithCurrencies>>() {
-			@Override
-			public void onChanged(List<ChildWithCurrencies> childWithCurrencies) {
-				//update RecyclerView
-				mAdapter.setChildren(childWithCurrencies);
-			}
-		});
 
 	}
 

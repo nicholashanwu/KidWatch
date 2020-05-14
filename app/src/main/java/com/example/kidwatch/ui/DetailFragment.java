@@ -8,26 +8,26 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kidwatch.Child;
-import com.example.kidwatch.ChildViewModel;
-import com.example.kidwatch.ChildWithCurrencies;
 import com.example.kidwatch.Currency;
 import com.example.kidwatch.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DetailFragment extends Fragment {
 
-	private ChildViewModel childViewModel;
 	private CurrencyAdapter mAdapter;
 	private TextView mTvName;
 	private TextView mTvAmount;
+	private Gson gson;
+
 
 	@Override
 	public View onCreateView(
@@ -42,7 +42,8 @@ public class DetailFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		childViewModel = new ViewModelProvider(this).get(ChildViewModel.class);
+		gson = new Gson();
+		final Type childType = new TypeToken<ArrayList<Child>>(){}.getType();
 
 
 		RecyclerView mRecyclerView = view.findViewById(R.id.rv_currency_list);
@@ -50,10 +51,11 @@ public class DetailFragment extends Fragment {
 		mRecyclerView.setHasFixedSize(true);
 
 		final List<Currency> currencies;
-		long id = getArguments().getLong("id");
-		currencies = childViewModel.getCurrency(id);
+		int id = getArguments().getInt("id");
 
-		mRecyclerView.setAdapter(mAdapter);
+		ArrayList<Child> children = gson.fromJson(		((MainActivity)getActivity()).read("storage.json"), childType);
+
+		currencies = children.get(id).getCurrencyList();
 
 		mAdapter = new CurrencyAdapter(new ArrayList<Currency>(), new CurrencyAdapter.CurrencyClickListener() {
 			@Override
@@ -62,6 +64,8 @@ public class DetailFragment extends Fragment {
 			}
 		});
 
+		mRecyclerView.setAdapter(mAdapter);
+
 
 		mAdapter.setCurrencies(currencies);
 
@@ -69,31 +73,11 @@ public class DetailFragment extends Fragment {
 		mTvAmount = view.findViewById(R.id.tvAmount);
 
 
+//		System.out.println(child.toString());
+//
+//		mTvName.setText(child.getChildName());
 
-
-
-
-		Child child = childViewModel.getChildById(id);
-
-		System.out.println(child.toString());
-
-		mTvName.setText(child.getChildName());
-
-
-
-		System.out.println(currencies);
-
-
-
-
-
-		childViewModel.getAllChildren().observe(getViewLifecycleOwner(), new Observer<List<ChildWithCurrencies>>() {
-			@Override
-			public void onChanged(List<ChildWithCurrencies> childWithCurrencies) {
-				mAdapter.setCurrencies(currencies);
-			}
-		});
-
+		//System.out.println(currencies);
 
 	}
 }

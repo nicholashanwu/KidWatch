@@ -9,17 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kidwatch.Child;
-import com.example.kidwatch.ChildWithCurrencies;
 import com.example.kidwatch.Currency;
 import com.example.kidwatch.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHolder> {
 
-	private List<ChildWithCurrencies> childList = new ArrayList<>();
+	private List<Child> childList = new ArrayList<>();
 
 	private ChildClickListener listener;
 
@@ -29,7 +27,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 	}
 
 	public interface ChildClickListener {
-		void onClick(long id);
+		void onClick(int id);
 	}
 
 	public class ChildViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -47,9 +45,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 
 		@Override
 		public void onClick(View v) {
-			listener.onClick(childList.get(getAdapterPosition()).child.getChildId());
-
-
+			listener.onClick(getAdapterPosition());
 		}
 	}
 
@@ -61,14 +57,12 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 
 	@Override
 	public void onBindViewHolder(@NonNull ChildAdapter.ChildViewHolder holder, int position) {
-		Child mChild = childList.get(position).child;
+		Child mChild = childList.get(position);
 
 		ArrayList<Currency> childCurrencies = new ArrayList<>();
 
 		holder.name.setText(mChild.getChildName());
-		holder.currency.setText(Arrays.toString(childList.get(position).currencies.toArray()));
-
-
+		holder.currency.setText(mChild.getCurrencyList().get(0).toString());
 
 	}
 
@@ -77,7 +71,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 		return childList.size();
 	}
 
-	public void setChildren(List<ChildWithCurrencies> childWithCurrenciesList) {
+	public void setChildren(List<Child> childWithCurrenciesList) {
 		this.childList = childWithCurrenciesList;
 		notifyDataSetChanged();
 	}

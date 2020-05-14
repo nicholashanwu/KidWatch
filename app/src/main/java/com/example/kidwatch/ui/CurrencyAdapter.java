@@ -59,9 +59,8 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
 		Currency mCurrency = currencyList.get(position);
 
 		ArrayList<Currency> currencies = new ArrayList<>();
-
 		holder.name.setText(mCurrency.getCurrencyName());
-		holder.amount.setText(mCurrency.getAmount());
+		holder.amount.setText(String.valueOf(mCurrency.getAmount()));
 	}
 
 	@Override
