@@ -9,6 +9,9 @@ public class Currency {
 	@SerializedName("currency_amount")
 	private int amount;
 
+	/**
+	Constructor
+	*/
 	public Currency(String currencyName, int amount) {
 		this.currencyName = currencyName;
 		this.amount = amount;
