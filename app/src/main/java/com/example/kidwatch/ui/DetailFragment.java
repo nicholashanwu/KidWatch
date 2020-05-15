@@ -2,7 +2,11 @@ package com.example.kidwatch.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +24,16 @@ import com.example.kidwatch.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetailFragment extends Fragment {
 
@@ -32,6 +42,9 @@ public class DetailFragment extends Fragment {
 	private ExtendedFloatingActionButton mFabAddCurrency;
 	private Gson gson;
 	private List<Currency> currencies;
+	private CircleImageView mIvProfile;
+
+	public static final int PICK_IMAGE = 1;
 
 	private int id;
 
@@ -48,8 +61,10 @@ public class DetailFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+
 		mTvChildName = view.findViewById(R.id.tvChildName);
 		mFabAddCurrency = view.findViewById(R.id.fabAddCurrency);
+		mIvProfile = view.findViewById(R.id.ivProfile);
 
 		gson = new Gson();
 		final Type childType = new TypeToken<ArrayList<Child>>(){}.getType();
@@ -66,6 +81,8 @@ public class DetailFragment extends Fragment {
 
 		mTvChildName.setText(children.get(id).getChildName());
 
+
+
 		mAdapter = new CurrencyAdapter(new ArrayList<Currency>(), new CurrencyAdapter.CurrencyClickListener() {
 			@Override
 			public void onClick(long id) {
@@ -77,6 +94,16 @@ public class DetailFragment extends Fragment {
 		mAdapter.setCurrencies(currencies);
 
 
+
+		mIvProfile.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setType("image/*");
+				intent.setAction(Intent.ACTION_GET_CONTENT);
+				startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+			}
+		});
 
 		mFabAddCurrency.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -90,8 +117,6 @@ public class DetailFragment extends Fragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						List<Currency> currencyList = new ArrayList<>();
-
 						ArrayList<Child> children = gson.fromJson(		((MainActivity)getActivity()).read("storage.json"), childType);
 						Currency currency = new Currency(currencyName.getText().toString(), 10);
 						children.get(id).getCurrencyList().add(currency);
@@ -100,7 +125,6 @@ public class DetailFragment extends Fragment {
 
 						((MainActivity)getActivity()).write("storage.json", json);
 						currencies = children.get(id).getCurrencyList();
-
 
 						mAdapter.setCurrencies(currencies);
 						//add to database
@@ -120,5 +144,29 @@ public class DetailFragment extends Fragment {
 			}
 		});
 
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (requestCode == PICK_IMAGE) {
+			try {
+				InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
+				Uri selectedImage = data.getData();
+				Picasso.get().load(selectedImage).resize(100, 100).centerCrop().into(mIvProfile);
+
+				//String encodedImage = Base64.encodeToString(Picasso.get().load(selectedImage));
+
+				Picasso.get().load(selectedImage);
+
+
+				mIvProfile.setImageResource(inputStream.read());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
 }

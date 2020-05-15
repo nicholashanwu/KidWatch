@@ -57,15 +57,21 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildViewHol
 
 	@Override
 	public void onBindViewHolder(@NonNull ChildAdapter.ChildViewHolder holder, int position) {
+
 		Child mChild = childList.get(position);
 
-		ArrayList<Currency> childCurrencies = new ArrayList<>();
-
 		holder.name.setText(mChild.getChildName());
+
 		if (!mChild.getCurrencyList().isEmpty()) {
-			holder.currency.setText(mChild.getCurrencyList().get(0).toString());
+			StringBuilder sb = new StringBuilder();
+			for(int i = 0; i < mChild.getCurrencyList().size(); i++) {
+				sb.append(mChild.getCurrencyList().get(i) + "\n");
+			}
+			holder.currency.setText(sb);
+
 		} else {
-			holder.currency.setText("");
+			holder.currency.setText("\n");
+
 		}
 	}
 
